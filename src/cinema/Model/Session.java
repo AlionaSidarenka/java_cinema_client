@@ -4,25 +4,25 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
 import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
 
 public class Session {
     static int sessionCount = 0;
     private Room room;
     private Movie movie;
     private int id;
-    private ObjectProperty<Date> startDateTime;
+    private ObjectProperty<LocalDateTime> startDateTime;
 
-    public Session(Room room, Movie movie, Date startDateTime) {
+    public Session(Room room, Movie movie, LocalDateTime startDateTime) {
         sessionCount++;
         id = sessionCount;
         this.room = room;
         this.movie = movie;
-        this.startDateTime = new SimpleObjectProperty<Date>(startDateTime);
+        this.startDateTime = new SimpleObjectProperty<LocalDateTime>(startDateTime);
     }
 
-    public ObjectProperty<Date> startDateTimeProperty() {
+    public ObjectProperty<LocalDateTime> startDateTimeProperty() {
         return this.startDateTime;
     }
 
@@ -38,7 +38,7 @@ public class Session {
         return id;
     }
 
-    public Date getStartDateTime() {
+    public LocalDateTime getStartDateTime() {
         return startDateTime.get();
     }
 
@@ -47,17 +47,10 @@ public class Session {
         return movie.getPrice().multiply(ratio);
     }
 
-    int getDay(Date date) {
-        Calendar c = Calendar.getInstance();
-        c.setTime(date);
-
-        return c.get(Calendar.DAY_OF_WEEK);
-    }
-
-    BigDecimal getDateRatio(Date date) {
-        if (this.getDay(date) == Calendar.MONDAY || this.getDay(date) == Calendar.TUESDAY || this.getDay(date) == Calendar.WEDNESDAY) {
+    BigDecimal getDateRatio(LocalDateTime date) {
+        if (date.getDayOfWeek() == DayOfWeek.MONDAY || date.getDayOfWeek()== DayOfWeek.TUESDAY || date.getDayOfWeek() == DayOfWeek.WEDNESDAY) {
             return PriceRatio.LOW.getRatio();
-        } else if (this.getDay(date) == Calendar.THURSDAY) {
+        } else if (date.getDayOfWeek() == DayOfWeek.THURSDAY) {
             return PriceRatio.MEDIUM.getRatio();
         }
 

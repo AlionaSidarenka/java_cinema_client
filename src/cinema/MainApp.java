@@ -10,11 +10,12 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Calendar;
-import java.util.Date;
 
 public class MainApp extends Application {
     private Stage primaryStage;
@@ -33,8 +34,8 @@ public class MainApp extends Application {
         Calendar calendar = Calendar.getInstance();
         calendar.set(0, 0, 0, 2, 0);
 
-        sessionsData.add(new Session(new Room(new int[] {1, 2}), new Movie("movieTitle", 12, "director", calendar, 12341234.5678901, "Armenia"), new Date()));
-        sessionsData.add(new Session(new Room(new int[] {1, 2}), new Movie("movieTitle2", 11, "director2", calendar, 12341234.5678901, "Armenia"), new Date()));
+        sessionsData.add(new Session(new Room(new int[] {1, 2}), new Movie("movieTitle", 12, "director", calendar, 12341234.5678901, "Armenia"), LocalDateTime.of(2017, 1, 14, 10, 34)));
+        sessionsData.add(new Session(new Room(new int[] {1, 2}), new Movie("movieTitle2", 11, "director2", calendar, 12341234.5678901, "Armenia"), LocalDateTime.of(2017, 1, 14, 12, 34)));
     }
     /**
 
@@ -67,14 +68,11 @@ public class MainApp extends Application {
      */
     public void showCinemaOverview() {
         try {
-
-            // Загружаем сведения об адресатах
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("/cinema/view/SessionsOverview.fxml"));
             AnchorPane cinemaOverview = loader.load();
 
-            // Помещаем сведения об адресатах в центр корневого макета
-            rootLayout.getChildren().add(cinemaOverview);
+            ((BorderPane) rootLayout.getChildren().get(0)).setCenter(cinemaOverview);
 
             // Даём контроллеру доступ к главному приложению
             SessionsOverviewController controller = loader.getController();

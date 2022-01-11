@@ -51,20 +51,21 @@
                      <children>
                         <Label text=" " />
                         <Label text="Director" GridPane.rowIndex="1" />
-                        <Label text="Label" GridPane.rowIndex="3" />
+                        <Label text="Start Date" GridPane.rowIndex="3" />
                         <Label text="Label" GridPane.rowIndex="4" />
                         <Label text="Label" GridPane.rowIndex="5" />
                         <Label text="Movie Name" />
-                        <Label fx:id="sessionRoomLabel" text="Label" GridPane.columnIndex="1" />
+                        <Label fx:id="sessionMovieTitleLabel" text="Label" GridPane.columnIndex="1" />
                         <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                         <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                         <Label text="Age Restriction" GridPane.rowIndex="2" />
+                        <Label fx:id="sessionStartDateTimeLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                      </children>
                   </GridPane>
                   <ButtonBar layoutX="5.0" layoutY="244.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                     <buttons>
-                      <Button mnemonicParsing="false" text="Button" />
+                      <Button mnemonicParsing="false" onAction="#handleDeleteSession" text="Delete" />
                         <Button mnemonicParsing="false" text="Button" />
                         <Button mnemonicParsing="false" text="Button" />
                     </buttons>
