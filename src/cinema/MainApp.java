@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -80,6 +81,10 @@ public class MainApp extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void showSeatsOverview(GridPane seatsOverview, String seatsPane) {
+        ((AnchorPane) rootLayout.lookup("#" + seatsPane)).getChildren().add(seatsOverview);
     }
     /**
      * Возвращает главную сцену.

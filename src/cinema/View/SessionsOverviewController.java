@@ -8,12 +8,15 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.GridPane;
 
 import java.time.LocalDateTime;
 
 public class SessionsOverviewController {
     @FXML
     private TableView<Session> sessionsTable;
+    @FXML
+    public String seatsPane = "seatsPane";
     @FXML
     private TableColumn<Session, LocalDateTime> sessionStartDateTimeColumn;
     @FXML
@@ -61,6 +64,8 @@ public class SessionsOverviewController {
         if (session != null) {
             sessionStartDateTimeLabel.setText(DateUtil.format(session.getStartDateTime()));
             sessionMovieTitleLabel.setText(session.getMovie().title());
+            GridPane seats = SeatsOverviewController.drawSeats(2,3);
+            mainApp.showSeatsOverview(seats, this.seatsPane);
         } else {
             sessionStartDateTimeLabel.setText("");
             sessionMovieTitleLabel.setText("");
