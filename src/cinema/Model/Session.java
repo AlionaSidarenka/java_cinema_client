@@ -5,7 +5,9 @@ import javafx.beans.property.SimpleObjectProperty;
 
 import java.math.BigDecimal;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class Session {
     static int sessionCount = 0;
@@ -22,10 +24,17 @@ public class Session {
         this.startDateTime = new SimpleObjectProperty<LocalDateTime>(startDateTime);
     }
 
+    public Session() {
+        // todo get this room from somewhere else (this is the single room)
+        this(new Room( new int[] {1, 2}, "Red") , null, LocalDateTime.now());
+    }
     public ObjectProperty<LocalDateTime> startDateTimeProperty() {
         return this.startDateTime;
     }
 
+    public void setStartDateTime(LocalDate date, Integer hours, Integer minutes) {
+        this.startDateTime.set(LocalDateTime.of(date, LocalTime.of(hours, minutes)));
+    }
     public Room getRoom() {
         return room;
     }

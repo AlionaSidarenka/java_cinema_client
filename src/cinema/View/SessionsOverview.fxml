@@ -74,8 +74,8 @@
                               <ButtonBar prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                 <buttons>
                                   <Button mnemonicParsing="false" onAction="#handleDeleteSession" text="Delete" />
-                                    <Button mnemonicParsing="false" text="Button" />
-                                    <Button mnemonicParsing="false" text="Button" />
+                                    <Button mnemonicParsing="false" onAction="#handleNewSession" text="Add" />
+                                    <Button mnemonicParsing="false" onAction="#handleEditSession" text="Edit..." />
                                 </buttons>
                               </ButtonBar>
                               <AnchorPane fx:id="seatsPane" prefHeight="256.0" prefWidth="372.0" AnchorPane.bottomAnchor="39.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />

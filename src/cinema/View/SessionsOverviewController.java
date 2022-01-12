@@ -5,8 +5,6 @@ import cinema.Model.Session;
 import cinema.util.DateUtil;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -97,15 +95,12 @@ public class SessionsOverviewController {
                 Button finalSeat = seat;
                 int finalI = i;
                 int finalJ = j;
-                seat.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        System.out.println(finalI);
-                        System.out.println(finalJ);
-                        finalSeat.setStyle("-fx-background-color: Yellow");
-                        System.out.println("Hello World!");
+                seat.setOnAction(event -> { // computeIfAbsent,
+                    System.out.println(finalI);
+                    System.out.println(finalJ);
+                    finalSeat.setStyle("-fx-background-color: Yellow");
+                    System.out.println("Hello World!");
 
-                    }
                 });
                 System.out.println(i);
                 System.out.println(j);
@@ -144,6 +139,38 @@ public class SessionsOverviewController {
             alert.setTitle("Не выбрана строка для удаления!");
             alert.setHeaderText("Предупреждение!");
             alert.setContentText("Выберите, пожалуйста, строку в таблице");
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
+    private void handleNewSession() {
+        Session session = new Session();
+
+        boolean okClicked = mainApp.showSessionEditDialog(session);
+
+        if (okClicked) {
+            mainApp.getSessionsData().add(session);
+        }
+    }
+    /**
+     * Вызывается, когда пользователь кликает по кнопка
+     "Редактировать"
+     * Открывает диалоговое окно для изменения выбранного адресата.
+     */
+    @FXML
+    private void handleEditSession() {
+        Session selectedSession = sessionsTable.getSelectionModel().getSelectedItem();
+        if (selectedSession != null) {
+            boolean okClicked = mainApp.showSessionEditDialog(selectedSession);
+            if (okClicked) showSessionDetails(selectedSession);
+        } else {
+            // Ничего не выбрано.
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.initOwner(mainApp.getPrimaryStage());
+            alert.setTitle("Нет выбранной записи");
+            alert.setHeaderText("Не выбрана запись");
+            alert.setContentText("Выберите запись в таблице для редактирования");
             alert.showAndWait();
         }
     }

@@ -3,6 +3,7 @@ package cinema;
 import cinema.Model.Movie;
 import cinema.Model.Room;
 import cinema.Model.Session;
+import cinema.View.SessionEditDialogController;
 import cinema.View.SessionsOverviewController;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -12,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -31,12 +33,13 @@ public class MainApp extends Application {
         showCinemaOverview();
     }
 
+    // Request{ command, data, params }
     public MainApp() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(0, 0, 0, 2, 0);
 
-        sessionsData.add(new Session(new Room(new int[] {1, 2}), new Movie("movieTitle", 12, "director", calendar, 12341234.5678901, "Armenia"), LocalDateTime.of(2017, 1, 14, 10, 34)));
-        sessionsData.add(new Session(new Room(new int[] {1, 2}), new Movie("movieTitle2", 11, "director2", calendar, 12341234.5678901, "Armenia"), LocalDateTime.of(2017, 1, 14, 12, 34)));
+        sessionsData.add(new Session(new Room(new int[] {1, 2}, "Red"), new Movie("movieTitle", 12, "director", calendar, 12341234.5678901, "Armenia"), LocalDateTime.of(2017, 1, 14, 10, 34)));
+        sessionsData.add(new Session(new Room(new int[] {1, 2}, "Red"), new Movie("movieTitle2", 11, "director2", calendar, 12341234.5678901, "Armenia"), LocalDateTime.of(2017, 1, 14, 12, 34)));
     }
     /**
 
@@ -95,5 +98,33 @@ public class MainApp extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public boolean showSessionEditDialog(Session session) {
+        // Загружаем fxml-файл и создаём новую сцену
+        // для всплывающего диалогового окна.
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("/cinema/view/SessionEditDialog.fxml"));
+            AnchorPane page = loader.load();
+
+            // Создаём диалоговое окно Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Edit");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+            // Передаём адресата в контроллер.
+            SessionEditDialogController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setSession(session);
+            // Отображаем диалоговое окно и ждём, пока пользователь его не закроет
+            dialogStage.showAndWait();
+            return controller.isOkClicked();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
