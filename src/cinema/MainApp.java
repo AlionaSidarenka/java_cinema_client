@@ -40,7 +40,7 @@ public class MainApp extends Application {
     }
     /**
 
-     * Возвращает данные в виде наблюдаемого списка адресатов.
+     * Возвращает данные в виде наблюдаемого списка.
      * @return
      */
     public ObservableList<Session> getSessionsData(){
