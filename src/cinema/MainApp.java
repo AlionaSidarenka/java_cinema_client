@@ -1,10 +1,9 @@
 package cinema;
 
-import cinema.Model.Movie;
-import cinema.Model.Room;
 import cinema.Model.Session;
 import cinema.View.SessionEditDialogController;
 import cinema.View.SessionsOverviewController;
+import cinema.connection.TCPConnection;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,10 +16,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Calendar;
+import java.util.List;
 
 public class MainApp extends Application {
+    List<Session> values;
     private Stage primaryStage;
     private AnchorPane rootLayout;
     private ObservableList<Session> sessionsData = FXCollections.observableArrayList();
@@ -34,12 +34,12 @@ public class MainApp extends Application {
     }
 
     // Request{ command, data, params }
-    public MainApp() {
+    public MainApp() throws IOException, ClassNotFoundException {
         Calendar calendar = Calendar.getInstance();
         calendar.set(0, 0, 0, 2, 0);
-
-        sessionsData.add(new Session(new Room(new int[] {1, 2}, "Red"), new Movie("movieTitle", 12, "director", calendar, 12341234.5678901, "Armenia"), LocalDateTime.of(2017, 1, 14, 10, 34)));
-        sessionsData.add(new Session(new Room(new int[] {1, 2}, "Red"), new Movie("movieTitle2", 11, "director2", calendar, 12341234.5678901, "Armenia"), LocalDateTime.of(2017, 1, 14, 12, 34)));
+        TCPConnection tcpConnection = new TCPConnection();
+        values =  tcpConnection.connect();
+        sessionsData.addAll(values);
     }
     /**
 
@@ -96,7 +96,7 @@ public class MainApp extends Application {
         return primaryStage;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
         launch(args);
     }
 

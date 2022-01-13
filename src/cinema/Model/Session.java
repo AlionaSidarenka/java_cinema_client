@@ -1,5 +1,8 @@
 package cinema.Model;
 
+import cinema.util.DateUtil;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
@@ -9,11 +12,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+@JsonDeserialize(as = Session.class)
 public class Session {
     static int sessionCount = 0;
     private Room room;
     private Movie movie;
     private int id;
+
+    @JsonProperty("startDateTime")
     private ObjectProperty<LocalDateTime> startDateTime;
 
     public Session(Room room, Movie movie, LocalDateTime startDateTime) {
@@ -25,8 +31,9 @@ public class Session {
     }
 
     public Session() {
-        // todo get this room from somewhere else (this is the single room)
-        this(new Room( new int[] {1, 2}, "Red") , null, LocalDateTime.now());
+        super();
+        // todo make request for room to be set by default
+        this.startDateTime = new SimpleObjectProperty<LocalDateTime>(LocalDateTime.now());
     }
     public ObjectProperty<LocalDateTime> startDateTimeProperty() {
         return this.startDateTime;
@@ -35,8 +42,17 @@ public class Session {
     public void setStartDateTime(LocalDate date, Integer hours, Integer minutes) {
         this.startDateTime.set(LocalDateTime.of(date, LocalTime.of(hours, minutes)));
     }
+
+    public void setStartDateTime(String str) {
+        this.startDateTime.set(DateUtil.parse(str));
+    }
+
     public Room getRoom() {
         return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
     }
 
     public Movie getMovie() {

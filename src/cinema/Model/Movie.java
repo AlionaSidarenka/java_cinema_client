@@ -1,11 +1,13 @@
 package cinema.Model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import javafx.beans.property.SimpleStringProperty;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Calendar;
 
+@JsonDeserialize(as = Movie.class)
 public class Movie implements Serializable {
     private static final long serialVersionUID = 6529685098267757690L;
     static int movieCount = 0;
@@ -37,6 +39,10 @@ public class Movie implements Serializable {
         this.director = director;
         this.length = length;
         this.price = BigDecimal.valueOf(price);
+    }
+
+    Movie(){
+        this.title = new SimpleStringProperty("");
     }
 
     public SimpleStringProperty titleProprety() {
