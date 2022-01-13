@@ -48,7 +48,7 @@ public class Movie implements Serializable {
     public SimpleStringProperty titleProprety() {
         return title;
     }
-    public String title() {
+    public String getTitle() {
         return title.get();
     }
 
@@ -104,4 +104,8 @@ public class Movie implements Serializable {
         this.price = price;
     }
 
+    @Override
+    public String toString () {
+        return this.getTitle();
+    }
 }

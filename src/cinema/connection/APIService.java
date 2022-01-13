@@ -15,26 +15,32 @@ public class APIService {
         APIService.clientSocket = clientSocket;
     }
 
-    public static <T> List<T> makeRequest(String msg, Class<T> content) throws IOException {
-        BufferedReader streamReader;
-        BufferedWriter streamWriter;
-        List<T> result;
+    public static <T> List<T> makeRequest(String msg, Class<T> content) {
+        BufferedReader streamReader = null;
+        BufferedWriter streamWriter = null;
+        List<T> result = null;
 
-        streamReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        streamWriter = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+        try {
+            streamReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            streamWriter = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+            ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+            JavaType type = objectMapper.getTypeFactory().constructParametricType(List.class, content);
 
-        ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
-        JavaType type = objectMapper.getTypeFactory().constructParametricType(List.class, content);
+            streamWriter.write(msg);
+            streamWriter.newLine();
+            streamWriter.flush();
 
-        streamWriter.write(msg);
-        streamWriter.newLine();
-        streamWriter.flush();
-
-        String str = streamReader.readLine();
-        result = objectMapper.readValue(str, type);
-
-        streamWriter.close();
-        streamReader.close();
+            String str = streamReader.readLine();
+            result = objectMapper.readValue(str, type);
+        } catch (IOException e) {
+            e.printStackTrace();
+            try {
+                streamReader.close();
+                streamWriter.close();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        }
 
         return result;
     }

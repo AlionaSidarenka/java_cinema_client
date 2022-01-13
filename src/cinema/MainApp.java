@@ -1,5 +1,6 @@
 package cinema;
 
+import cinema.Model.Movie;
 import cinema.Model.Session;
 import cinema.View.SessionEditDialogController;
 import cinema.View.SessionsOverviewController;
@@ -21,7 +22,8 @@ import java.util.Calendar;
 import java.util.List;
 
 public class MainApp extends Application {
-    List<Session> values;
+    List<Session> sessions;
+    List<Movie> movies;
     private Stage primaryStage;
     private AnchorPane rootLayout;
     private ObservableList<Session> sessionsData = FXCollections.observableArrayList();
@@ -40,8 +42,9 @@ public class MainApp extends Application {
         calendar.set(0, 0, 0, 2, 0);
         TCPConnection tcpConnection = new TCPConnection();
         tcpConnection.connect();
-        values = (List<Session>) APIService.<Session>makeRequest("get", Session.class);
-        sessionsData.addAll(values);
+        movies = (List<Movie>) APIService.<Movie>makeRequest("getMovies", Movie.class);
+        sessions = (List<Session>) APIService.<Session>makeRequest("getSessions", Session.class);
+        sessionsData.addAll(sessions);
     }
     /**
 
@@ -120,7 +123,7 @@ public class MainApp extends Application {
             // Передаём адресата в контроллер.
             SessionEditDialogController controller = loader.getController();
             controller.setDialogStage(dialogStage);
-            controller.setSession(session);
+            controller.setSession(session, movies);
             // Отображаем диалоговое окно и ждём, пока пользователь его не закроет
             dialogStage.showAndWait();
             return controller.isOkClicked();

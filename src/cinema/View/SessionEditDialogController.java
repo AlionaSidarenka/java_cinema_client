@@ -5,10 +5,12 @@ import cinema.Model.Session;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.util.Callback;
+import javafx.util.StringConverter;
+
+import java.util.List;
 
 public class SessionEditDialogController {
     @FXML
@@ -40,29 +42,52 @@ public class SessionEditDialogController {
         this.dialogStage = dialogStage;
     }
 
-    public void setSession(Session session) {
+    public class StringConverterStreet extends StringConverter<Movie> {
+
+        @Override
+        public String toString(Movie movie) {
+            return movie == null ? null : movie.getTitle();
+        }
+
+        @Override
+        public Movie fromString(String string) {
+            return null;
+        }
+
+    }
+
+    public void setSession(Session session, List<Movie> movies) {
         this.session = session;
+        ObservableList<Movie> movies$ = FXCollections.observableArrayList();
+        movies$.addAll(movies);
+        sessionMovie.setItems(movies$);
         ObservableList<Integer> hours = FXCollections.observableArrayList();
         for (int i = 1; i <= 24; i++) {
             hours.add(i);
         }
         sessionHours.setItems(hours);
+        Callback<ListView<Movie>, ListCell<Movie>> factory = lv -> new ListCell<Movie>() {
+            @Override
+            protected void updateItem(Movie item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? "" : item.getTitle());
+            }
 
+        };
+
+        // sessionMovie.setConverter(new StringConverterStreet());
+        sessionMovie.setCellFactory(factory);
+        sessionMovie.setButtonCell(factory.call(null));
         ObservableList<Integer> minutes = FXCollections.observableArrayList();
         for (int i = 1; i <= 60; i++) {
             minutes.add(i);
         }
         sessionMinutes.setItems(minutes);
-        /*sessionMovieTitleLabel.setText(session.getMovie().title());
-        sessionMovieDirector.setText(session.getMovie().getDirector());
-        sessionMovieAgeRestriction.setText(session.getMovie().getAgeRestriction());*/
+        sessionMovie.getSelectionModel().select(session.getMovie());
         sessionDate.setValue(session.getStartDateTime().toLocalDate());
         sessionHours.setValue(session.getStartDateTime().getHour());
         sessionMinutes.setValue(session.getStartDateTime().getMinute());
         sessionRoomLabel.setText(session.getRoom().getName());
-
-        /*birthdayField.setText(DateUtil.format(person.getBirthday()));
-        birthdayField.setPromptText("dd.mm.yyyy");*/
     }
     /**
      * Returns true, если пользователь кликнул OK, в другом случае
@@ -79,7 +104,7 @@ public class SessionEditDialogController {
     @FXML
     private void handleOk() {
         if (isInputValid()) {
-            // todo populate with movies
+            session.setMovie(sessionMovie.getValue());
             session.setStartDateTime(sessionDate.getValue(), sessionHours.getValue(), sessionMinutes.getValue());
             okClicked = true;
             dialogStage.close();

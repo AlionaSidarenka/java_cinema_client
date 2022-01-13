@@ -65,7 +65,7 @@ public class SessionsOverviewController {
     private void showSessionDetails(Session session) {
         if (session != null) {
             sessionStartDateTimeLabel.setText(DateUtil.format(session.getStartDateTime()));
-            sessionMovieTitleLabel.setText(session.getMovie().title());
+            sessionMovieTitleLabel.setText(session.getMovie().getTitle());
             drawSeats(2,3);
         } else {
             sessionStartDateTimeLabel.setText("");
@@ -164,6 +164,7 @@ public class SessionsOverviewController {
         if (selectedSession != null) {
             boolean okClicked = mainApp.showSessionEditDialog(selectedSession);
             if (okClicked) showSessionDetails(selectedSession);
+            sessionsTable.refresh();
         } else {
             // Ничего не выбрано.
             Alert alert = new Alert(Alert.AlertType.WARNING);
