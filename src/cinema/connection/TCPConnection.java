@@ -1,6 +1,7 @@
 package cinema.connection;
 
 import cinema.Model.Session;
+import cinema.services.APIService;
 
 import java.io.IOException;
 import java.net.Socket;

@@ -4,8 +4,9 @@ import cinema.Model.Movie;
 import cinema.Model.Session;
 import cinema.View.SessionEditDialogController;
 import cinema.View.SessionsOverviewController;
-import cinema.connection.APIService;
 import cinema.connection.TCPConnection;
+import cinema.services.MoviesService;
+import cinema.services.SessionsService;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -42,8 +43,8 @@ public class MainApp extends Application {
         calendar.set(0, 0, 0, 2, 0);
         TCPConnection tcpConnection = new TCPConnection();
         tcpConnection.connect();
-        movies = (List<Movie>) APIService.<Movie>makeRequest("getMovies", Movie.class);
-        sessions = (List<Session>) APIService.<Session>makeRequest("getSessions", Session.class);
+        movies = MoviesService.getAllMovies();
+        sessions = SessionsService.getAllSessions();
         sessionsData.addAll(sessions);
     }
     /**
