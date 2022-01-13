@@ -3,6 +3,7 @@ package cinema;
 import cinema.Model.Session;
 import cinema.View.SessionEditDialogController;
 import cinema.View.SessionsOverviewController;
+import cinema.connection.APIService;
 import cinema.connection.TCPConnection;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -38,7 +39,8 @@ public class MainApp extends Application {
         Calendar calendar = Calendar.getInstance();
         calendar.set(0, 0, 0, 2, 0);
         TCPConnection tcpConnection = new TCPConnection();
-        values =  tcpConnection.connect();
+        tcpConnection.connect();
+        values = (List<Session>) APIService.<Session>makeRequest("get", Session.class);
         sessionsData.addAll(values);
     }
     /**
