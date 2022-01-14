@@ -1,0 +1,11 @@
+.available {
+     -fx-background-color: green;
+}
+
+.reserved {
+    -fx-background-color: orange;
+}
+
+.sold {
+    -fx-background-color: red;
+}

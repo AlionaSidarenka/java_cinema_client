@@ -1,6 +1,7 @@
 package cinema.View;
 
 import cinema.MainApp;
+import cinema.Model.Seat;
 import cinema.Model.Session;
 import cinema.services.SessionsService;
 import cinema.util.DateUtil;
@@ -14,6 +15,8 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class SessionsOverviewController {
     @FXML
@@ -67,51 +70,58 @@ public class SessionsOverviewController {
         if (session != null) {
             sessionStartDateTimeLabel.setText(DateUtil.format(session.getStartDateTime()));
             sessionMovieTitleLabel.setText(session.getMovie().getTitle());
-            drawSeats(2,3);
+            drawSeats(session.getRoom().getSeats());
         } else {
             sessionStartDateTimeLabel.setText("");
             sessionMovieTitleLabel.setText("");
         }
     }
 
-    public void drawSeats(int rows, int col) {
+    public void drawSeats(ArrayList<ArrayList<Seat>> seats) {
+        int rows = seats.size();
+        int col = 0;
         Button seat;
         GridPane gridPane = new GridPane();
         gridPane.setHgap(rows);
-        gridPane.setVgap(col);
+
         gridPane.setPrefWidth(seatsPane.getWidth());
         String seatName;
+        Iterator<ArrayList<Seat>> iter = seats.iterator();
 
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < col; j++) {
+        while (iter.hasNext()) {
+            ArrayList<Seat> next = iter.next();
+            col = Math.max(col, next.size());
+
+            Iterator<Seat> innerIter = next.iterator();
+            while (innerIter.hasNext()) {
+                Seat roomSeat = innerIter.next();
                 seat = new Button();
                 seat.setAlignment(Pos.CENTER);
                 seat.setPrefSize(40, 40);
 
-                seatName = Integer.toString(i + 1) + " " + Integer.toString(j + 1);
+                seatName = Integer.toString(roomSeat.getPlace() + 1) + " " + Integer.toString(roomSeat.getRow() + 1);
                 seat.setText(seatName);
-                seat.setStyle("-fx-background-color: MediumSeaGreen");
-
+                if (roomSeat.getSold()) {
+                    seat.getStyleClass().add("sold");
+                } else {
+                    seat.getStyleClass().add("available");
+                }
 
                 Button finalSeat = seat;
-                int finalI = i;
-                int finalJ = j;
-                seat.setOnAction(event -> { // computeIfAbsent,
-                    System.out.println(finalI);
-                    System.out.println(finalJ);
-                    finalSeat.setStyle("-fx-background-color: Yellow");
-                    System.out.println("Hello World!");
-
+                seat.setOnAction(event -> {
+                    if (roomSeat.getSold()) {
+                        return;
+                    } else {
+                        roomSeat.setReserved(!roomSeat.getReserved());
+                        finalSeat.getStyleClass().clear();
+                        finalSeat.getStyleClass().add(roomSeat.getReserved() ? "reserved" : "available");
+                    }
                 });
-                System.out.println(i);
-                System.out.println(j);
-                //add them to the GridPane
-                gridPane.add(seat, j, i); //  (child, columnIndex, rowIndex)
-
+                gridPane.add(seat, roomSeat.getPlace(), roomSeat.getRow()); //  (child, columnIndex, rowIndex)
             }
         }
 
-        System.out.println(col);
+        gridPane.setVgap(col);
         for (int i = 0; i < col; i++) {
             ColumnConstraints cc = new ColumnConstraints();
             cc.setPercentWidth(100.0 / col);
@@ -170,6 +180,23 @@ public class SessionsOverviewController {
                 showSessionDetails(selectedSession);
                 sessionsTable.refresh();
             }
+        } else {
+            // Ничего не выбрано.
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.initOwner(mainApp.getPrimaryStage());
+            alert.setTitle("Нет выбранной записи");
+            alert.setHeaderText("Не выбрана запись");
+            alert.setContentText("Выберите запись в таблице для редактирования");
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
+    private void handleBuyTickets() {
+        Session selectedSession = sessionsTable.getSelectionModel().getSelectedItem();
+        if (selectedSession != null) {
+            SessionsService.updateSession(selectedSession.getId(), selectedSession);
+            sessionsTable.refresh();
         } else {
             // Ничего не выбрано.
             Alert alert = new Alert(Alert.AlertType.WARNING);

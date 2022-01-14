@@ -4,21 +4,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import javafx.beans.property.SimpleStringProperty;
 
+import java.util.ArrayList;
+
 @JsonDeserialize(as = Room.class)
 public class Room {
     @JsonProperty("seats")
-    Seat[][] seats;
+    ArrayList<ArrayList<Seat>> seats;
 
     @JsonProperty("name")
     private SimpleStringProperty name;
 
     public Room(int[] places, String name) {
         this.name = new SimpleStringProperty(name);
-        seats = new Seat[places.length][];
+        seats = new ArrayList();
         for (int i = 0; i < places.length; i++) {
-            seats[i] = new Seat[places[i]];
+            seats.add(new ArrayList());
             for (int j = 0; j < places[i]; j++) {
-                seats[i][j] = new Seat(i, j);
+                seats.get(i).add(new Seat(i, j));
             }
         }
     }
@@ -27,6 +29,10 @@ public class Room {
 
     public String getName() {
         return this.name.get();
+    }
+
+    public ArrayList<ArrayList<Seat>> getSeats() {
+        return this.seats;
     }
 
     public SimpleStringProperty nameProperty() {

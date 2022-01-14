@@ -13,7 +13,7 @@ public class SessionsService {
     }
 
     public static Session updateSession(Integer id, Session data) {
-        Map<String, Integer> params = new HashMap<String, Integer>();
+        Map<String, Integer> params = new HashMap();
         params.put("id", id);
         return APIService.<Session>makePutRequest(new Request("PUT", "updateSession", params, data), Session.class);
     }

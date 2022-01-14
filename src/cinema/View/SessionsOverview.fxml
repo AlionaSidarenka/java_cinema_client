@@ -76,9 +76,10 @@
                                   <Button mnemonicParsing="false" onAction="#handleDeleteSession" text="Delete" />
                                     <Button mnemonicParsing="false" onAction="#handleNewSession" text="Add" />
                                     <Button mnemonicParsing="false" onAction="#handleEditSession" text="Edit..." />
+                                    <Button mnemonicParsing="false" onAction="#handleBuyTickets" text="Buy" />
                                 </buttons>
                               </ButtonBar>
-                              <AnchorPane fx:id="seatsPane" prefHeight="256.0" prefWidth="372.0" AnchorPane.bottomAnchor="39.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <AnchorPane fx:id="seatsPane" layoutX="-8.0" layoutY="-10.0" prefHeight="256.0" prefWidth="372.0" stylesheets="@sessions-overview.css" AnchorPane.bottomAnchor="49.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children>
                         </AnchorPane>
                     </items>

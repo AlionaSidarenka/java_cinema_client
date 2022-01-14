@@ -23,4 +23,24 @@ public class Seat {
     }
 
     Seat(){}
+
+    public int getPlace() {
+        return this.place;
+    }
+
+    public int getRow() {
+        return this.row;
+    }
+
+    public boolean getSold() {
+        return this.sold;
+    }
+
+    public boolean getReserved() {
+        return this.reserved;
+    }
+
+    public void setReserved(boolean reserved) {
+        this.reserved = reserved;
+    }
 }
