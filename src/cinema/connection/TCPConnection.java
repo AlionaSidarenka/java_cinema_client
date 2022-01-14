@@ -1,11 +1,12 @@
 package cinema.connection;
 
-import cinema.Model.Session;
 import cinema.services.APIService;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.Socket;
-import java.util.List;
+import java.util.Properties;
 
 public class TCPConnection {
     Socket clientSocket;
@@ -13,20 +14,26 @@ public class TCPConnection {
     private final Integer MAX_RECONNECT_ATTEMPTS = 3;
 
     public void connect() throws IOException, ClassNotFoundException {
-        List<Session> values = null;
+        try (InputStream input = new FileInputStream("config.properties")) {
+            Properties prop = new Properties();
+            prop.load(input);
 
-        try {
-            clientSocket = new Socket("127.0.0.1", 2525);
-            APIService service = new APIService(clientSocket);
-            System.out.println("connection established....");
-        } catch ( IOException e) {
-            System.out.println(e);
-
-            if (reconnectAttempts > MAX_RECONNECT_ATTEMPTS) {
-                this.disconnect();
-            } else {
-                this.reconnect();
+            try {
+                clientSocket = new Socket(
+                        prop.getProperty("socket.host"),
+                        Integer.parseInt(prop.getProperty("socket.port")));
+                APIService service = new APIService(clientSocket);
+                System.out.println("connection established....");
+            } catch ( IOException e) {
+                e.printStackTrace();
+                if (reconnectAttempts > MAX_RECONNECT_ATTEMPTS) {
+                    this.disconnect();
+                } else {
+                    this.reconnect();
+                }
             }
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 
