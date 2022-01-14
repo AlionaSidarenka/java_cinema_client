@@ -5,6 +5,7 @@ import cinema.Model.Seat;
 import cinema.Model.Session;
 import cinema.services.SessionsService;
 import cinema.util.DateUtil;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -12,9 +13,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class SessionsOverviewController {
     @FXML
@@ -29,6 +32,8 @@ public class SessionsOverviewController {
     private Label sessionStartDateTimeLabel;
     @FXML
     private Label sessionMovieTitleLabel;
+    @FXML
+    private DatePicker selectedDate;
 
     // reference to Main App
     private MainApp mainApp;
@@ -52,6 +57,7 @@ public class SessionsOverviewController {
         // Listen to table selection change
         sessionsTable.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> showSessionDetails(newValue));
+        selectedDate.setValue(LocalDate.now());
     }
 
     public void setMainApp(MainApp mainApp) {
@@ -102,12 +108,12 @@ public class SessionsOverviewController {
                 seat.setAlignment(Pos.CENTER);
                 seat.setPrefSize(40, 40);
 
-                seatName = Integer.toString(roomSeat.getPlace() + 1) + " " + Integer.toString(roomSeat.getRow() + 1);
+                seatName = Integer.toString(roomSeat.getRow() + 1) + " " + Integer.toString(roomSeat.getPlace() + 1);
                 seat.setText(seatName);
                 if (roomSeat.getSold()) {
                     seat.getStyleClass().add("sold");
                 } else {
-                    seat.getStyleClass().add("available");
+                    seat.getStyleClass().add(roomSeat.getReserved() ? "reserved" : "available");
                 }
 
                 Button finalSeat = seat;
@@ -131,6 +137,7 @@ public class SessionsOverviewController {
         }
 
         // gridPane.setGridLinesVisible(true);
+        seatsPane.getChildren().clear();
         seatsPane.getChildren().add(gridPane);
 
         this.mainApp.getPrimaryStage().widthProperty().addListener((arg0, arg1, arg2) ->
@@ -169,7 +176,15 @@ public class SessionsOverviewController {
             if (okClicked) {
                 SessionsService.updateSession(selectedSession.getId(), selectedSession);
                 showSessionDetails(selectedSession);
-                sessionsTable.refresh();
+                // sessionsTable.refresh();
+            }
+
+            int selectedIndex = sessionsTable.getSelectionModel().getSelectedIndex();
+
+            if (selectedIndex >= 0) {
+                sessionsTable.getItems().set(selectedIndex, selectedSession);
+            } else {
+                this.showAlert();
             }
         } else {
             this.showAlert();
@@ -185,5 +200,12 @@ public class SessionsOverviewController {
         } else {
             this.showAlert();
         }
+    }
+
+    @FXML
+    private void loadSessions() {
+        List<Session> sessions = SessionsService.getAllSessions(selectedDate.getValue());
+        Session selectedSession = sessionsTable.getSelectionModel().getSelectedItem();
+        sessionsTable.setItems(FXCollections.observableArrayList(sessions));
     }
 }

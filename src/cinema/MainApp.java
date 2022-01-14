@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Properties;
 
@@ -46,7 +47,7 @@ public class MainApp extends Application {
         }
 
         movies = MoviesService.getAllMovies();
-        sessions = SessionsService.getAllSessions();
+        sessions = SessionsService.getAllSessions(LocalDate.now());
         sessionsData.addAll(sessions);
     }
 
@@ -54,6 +55,11 @@ public class MainApp extends Application {
 
     public ObservableList<Session> getSessionsData(){
         return sessionsData;
+    }
+
+    public void setSessions(List<Session> sessions){
+        sessionsData.clear();
+        sessionsData.addAll(sessions);
     }
 
     private void initRootLayout() {
