@@ -37,7 +37,6 @@ public class MainApp extends Application {
         showCinemaOverview();
     }
 
-    // Request{ command, data, params }
     public MainApp() throws IOException, ClassNotFoundException {
         Calendar calendar = Calendar.getInstance();
         calendar.set(0, 0, 0, 2, 0);

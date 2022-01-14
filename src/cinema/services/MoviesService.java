@@ -7,6 +7,6 @@ import java.util.List;
 
 public class MoviesService {
     public static List<Movie> getAllMovies() {
-        return APIService.<Movie>makeRequest(new Request("GET", "getMovies"), Movie.class);
+        return APIService.<Movie>makeGetRequest(new Request("GET", "getMovies"), Movie.class);
     }
 }

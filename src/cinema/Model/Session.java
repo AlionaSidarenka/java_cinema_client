@@ -6,8 +6,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
-import java.math.BigDecimal;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -71,7 +69,7 @@ public class Session {
         return startDateTime.get();
     }
 
-    public BigDecimal getPrice() {
+    /*public BigDecimal getPrice() {
         BigDecimal ratio = getDateRatio(getStartDateTime());
         return movie.getPrice().multiply(ratio);
     }
@@ -84,5 +82,5 @@ public class Session {
         }
 
         return PriceRatio.HIGH.getRatio();
-    }
+    }*/
 }

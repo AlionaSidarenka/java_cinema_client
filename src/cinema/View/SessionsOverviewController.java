@@ -2,6 +2,7 @@ package cinema.View;
 
 import cinema.MainApp;
 import cinema.Model.Session;
+import cinema.services.SessionsService;
 import cinema.util.DateUtil;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -163,8 +164,12 @@ public class SessionsOverviewController {
         Session selectedSession = sessionsTable.getSelectionModel().getSelectedItem();
         if (selectedSession != null) {
             boolean okClicked = mainApp.showSessionEditDialog(selectedSession);
-            if (okClicked) showSessionDetails(selectedSession);
-            sessionsTable.refresh();
+            if (okClicked) {
+                Integer id = selectedSession.getId();
+                SessionsService.updateSession(selectedSession.getId(), selectedSession);
+                showSessionDetails(selectedSession);
+                sessionsTable.refresh();
+            }
         } else {
             // Ничего не выбрано.
             Alert alert = new Alert(Alert.AlertType.WARNING);
