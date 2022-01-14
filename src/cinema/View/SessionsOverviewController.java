@@ -174,7 +174,7 @@ public class SessionsOverviewController {
             boolean okClicked = mainApp.showSessionEditDialog(selectedSession);
 
             if (okClicked) {
-                SessionsService.updateSession(selectedSession.getId(), selectedSession);
+                // SessionsService.updateSession(selectedSession.getId(), selectedSession);
                 showSessionDetails(selectedSession);
                 // sessionsTable.refresh();
             }
@@ -195,7 +195,7 @@ public class SessionsOverviewController {
     private void handleBuyTickets() {
         Session selectedSession = sessionsTable.getSelectionModel().getSelectedItem();
         if (selectedSession != null) {
-            SessionsService.updateSession(selectedSession.getId(), selectedSession);
+            // SessionsService.updateSession(selectedSession.getId(), selectedSession);
             sessionsTable.refresh();
         } else {
             this.showAlert();

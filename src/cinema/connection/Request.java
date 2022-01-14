@@ -1,9 +1,11 @@
 package cinema.connection;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+@XmlRootElement
 public class Request<T> implements Serializable {
     private String method;
     private String url;
@@ -34,6 +36,8 @@ public class Request<T> implements Serializable {
         this.params = params;
     }
 
+    private Request() {}
+
     public String getMethod() {
         return this.method;
     }
@@ -48,5 +52,22 @@ public class Request<T> implements Serializable {
 
     public Map<String, String> getParams() {
         return this.params;
+    }
+
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
+
+    public void setParams(Map<String, String> params) {
+        this.params = params;
     }
 }

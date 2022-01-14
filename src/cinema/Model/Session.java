@@ -1,8 +1,6 @@
 package cinema.Model;
 
 import cinema.util.DateUtil;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
@@ -10,14 +8,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-@JsonDeserialize(as = Session.class)
 public class Session {
     static int sessionCount = 0;
     private Room room;
     private Movie movie;
     private int id;
 
-    @JsonProperty("startDateTime")
     private ObjectProperty<LocalDateTime> startDateTime;
 
     public Session(Room room, Movie movie, LocalDateTime startDateTime) {

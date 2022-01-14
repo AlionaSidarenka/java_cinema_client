@@ -1,17 +1,11 @@
 package cinema.Model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import javafx.beans.property.SimpleStringProperty;
 
 import java.util.ArrayList;
 
-@JsonDeserialize(as = Room.class)
 public class Room {
-    @JsonProperty("seats")
     ArrayList<ArrayList<Seat>> seats;
-
-    @JsonProperty("name")
     private SimpleStringProperty name;
 
     public Room(int[] places, String name) {

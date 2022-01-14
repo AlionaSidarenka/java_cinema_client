@@ -5,7 +5,6 @@ import cinema.Model.Session;
 import cinema.View.SessionEditDialogController;
 import cinema.View.SessionsOverviewController;
 import cinema.connection.TCPConnection;
-import cinema.services.MoviesService;
 import cinema.services.SessionsService;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -46,7 +45,7 @@ public class MainApp extends Application {
             e.printStackTrace();
         }
 
-        movies = MoviesService.getAllMovies();
+        // movies = MoviesService.getAllMovies();
         sessions = SessionsService.getAllSessions(LocalDate.now());
         sessionsData.addAll(sessions);
     }
