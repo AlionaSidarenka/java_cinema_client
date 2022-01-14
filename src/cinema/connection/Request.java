@@ -45,4 +45,8 @@ public class Request<T> implements Serializable {
     public T getData() {
         return this.data;
     }
+
+    public Map<String, String> getParams() {
+        return this.params;
+    }
 }
