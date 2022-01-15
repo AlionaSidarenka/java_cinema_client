@@ -7,7 +7,7 @@ import lombok.Setter;
 import java.io.*;
 import java.util.ArrayList;
 
-public class Room implements Serializable {
+public class Room implements Externalizable {
     private static final long SERIAL_VERSION_UID = 1339354843860741300L;
     @Getter
     @Setter
@@ -25,7 +25,7 @@ public class Room implements Serializable {
         }
     }
 
-    Room() {
+    public Room() {
         this.name = new SimpleStringProperty("");
     }
 
@@ -39,6 +39,16 @@ public class Room implements Serializable {
 
     public String getName() {
         return this.name.get();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeObject(getName());
+    }
+
+    @Override
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        setName((String)in.readObject());
     }
 
 /*    @Override
