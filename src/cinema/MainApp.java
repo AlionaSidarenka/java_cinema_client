@@ -47,8 +47,8 @@ public class MainApp extends Application {
         }
 
         sessions = SessionsService.getAllSessions(LocalDate.now());
-        movies = MoviesService.getAllMovies(sessions);
         sessionsData.addAll(sessions);
+        movies = MoviesService.getAllMovies(sessions);
     }
 
     public MainApp() { }
@@ -57,9 +57,14 @@ public class MainApp extends Application {
         return sessionsData;
     }
 
+    public List<Movie> getMovies(LocalDate localDate) {
+        return movies;
+    }
+
     public void setSessions(List<Session> sessions){
         sessionsData.clear();
         sessionsData.addAll(sessions);
+        movies = MoviesService.getAllMovies(sessions);
     }
 
     private void initRootLayout() {

@@ -6,7 +6,6 @@ import cinema.model.Session;
 import cinema.util.DateUtil;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,10 +25,8 @@ public class SessionsService {
         return response;
     }
 
-    public static Response deleteSession(LocalDateTime date) {
-        Map<String, String> params = new HashMap();
-        params.put("date", DateUtil.format(date));
-        Response response = APIService.<Session>makeRequest(new Request("DELETE", "deleteSession", params));
+    public static Response deleteSession(Session data) {
+        Response response = APIService.<Session>makeRequest(new Request("DELETE", "deleteSession", data));
 
         return response;
     }

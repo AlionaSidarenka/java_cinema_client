@@ -1,17 +1,17 @@
 package cinema.view;
 
 import cinema.MainApp;
+import cinema.connection.Response;
 import cinema.model.Seat;
 import cinema.model.Session;
 import cinema.services.SessionsService;
-import cinema.util.DateUtil;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import org.apache.commons.lang3.SerializationUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -81,6 +81,24 @@ public class SessionsOverviewController {
         alert.setTitle("Session is not selected!");
         alert.setHeaderText("Warning!");
         alert.setContentText("Please choose line in the table");
+        alert.showAndWait();
+    }
+
+    public void showErrorAlert(String msg, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.initOwner(mainApp.getPrimaryStage());
+        alert.setTitle(msg);
+        alert.setHeaderText("Error!");
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    public void showSuccessAlert(String msg, String content) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initOwner(mainApp.getPrimaryStage());
+        alert.setTitle(msg);
+        alert.setHeaderText("Success!");
+        alert.setContentText(content);
         alert.showAndWait();
     }
 
@@ -178,8 +196,14 @@ public class SessionsOverviewController {
         Session selectedSession = sessionsTable.getSelectionModel().getSelectedItem();
 
         if (selectedIndex >= 0) {
-            SessionsService.deleteSession(selectedSession.getStartDateTime());
-            sessionsTable.getItems().remove(selectedIndex);
+            Response response = SessionsService.deleteSession(selectedSession);
+
+            if (response.getStatus().equals("Ok")) {
+                sessionsTable.getItems().remove(selectedIndex);
+                this.showSuccessAlert("Session was deleted", "Congratulations!");
+            } else {
+                this.showErrorAlert("Session was not deleted!", response.getMessage());
+            }
         } else {
             this.showAlert();
         }
@@ -215,9 +239,20 @@ public class SessionsOverviewController {
     @FXML
     private void handleBuyTickets() {
         Session selectedSession = sessionsTable.getSelectionModel().getSelectedItem();
+        Session sessionToSave = SerializationUtils.clone(selectedSession);
+
         if (selectedSession != null) {
-            // SessionsService.updateSession(selectedSession.getId(), selectedSession);
-            sessionsTable.refresh();
+            Seat[][] seats = selectedSession.getRoom().getSeats();
+            for (int i = 0; i < seats.length; i++) {
+                for (int j = 0; j < seats[i].length; j++) {
+                    if (seats[i][j].isReserved()) {
+                        sessionToSave.getRoom().getSeats()[i][j].setSold(true);
+                        sessionToSave.getRoom().getSeats()[i][j].setReserved(false);
+                    }
+                }
+            }
+            SessionsService.updateSession(sessionToSave);
+            loadSessions();
         } else {
             this.showAlert();
         }
@@ -226,6 +261,7 @@ public class SessionsOverviewController {
     @FXML
     private void loadSessions() {
         List<Session> sessions = SessionsService.getAllSessions(selectedDate.getValue());
-        sessionsTable.setItems(FXCollections.observableArrayList(sessions));
+        mainApp.setSessions(sessions);
+        // sessionsTable.setItems(FXCollections.observableArrayList(sessions));
     }
 }
