@@ -42,7 +42,7 @@ public class Session implements Externalizable {
     }
 
     public void setStartDateTime(LocalDate date, Integer hours, Integer minutes) {
-        this.startDateTime.set(LocalDateTime.of(date, LocalTime.of(hours, minutes)));
+        this.startDateTime.set(LocalDateTime.of(date, LocalTime.of(hours, minutes, 0)));
     }
 
     public void setStartDateTime(LocalDateTime date) {

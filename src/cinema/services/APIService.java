@@ -8,25 +8,20 @@ import java.net.Socket;
 
 public class APIService {
     private static Socket clientSocket;
+    private static ObjectInputStream objectInputStream;
+    private static ObjectOutputStream objectOutputStream;
 
-    public APIService(Socket clientSocket) {
+    public APIService(Socket clientSocket) throws IOException {
         APIService.clientSocket = clientSocket;
+        objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
+        objectInputStream = new ObjectInputStream(clientSocket.getInputStream());;
     }
 
-    public static Response makeGetRequest(Request request) {
-        ObjectInputStream objectInputStream = null;
-        ObjectOutputStream objectOutputStream = null;
+    public static Response makeRequest(Request request) {
         Response response = null;
 
         try {
-            objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
-            // objectOutputStream.flush();
-
-            objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
             objectOutputStream.writeObject(request);
-
-            // objectOutputStream.flush();
-
             response = (Response) objectInputStream.readObject();
             System.out.println(response);
         } catch (IOException e) {
