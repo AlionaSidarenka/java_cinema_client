@@ -15,9 +15,22 @@ import javafx.scene.layout.GridPane;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 public class SessionsOverviewController {
+    @FXML
+    public Label sessionDirectorLabel;
+    @FXML
+    public Label sessionMoviePriceLabel;
+    @FXML
+    public Label sessionMovieAgeRestrictionLabel;
+    @FXML
+    public Label sessionMovieCountriesLabel;
+    @FXML
+    public Label sessionMovieLengthLabel;
+    @FXML
+    public Label sessionMovieDirectorLabel;
     @FXML
     private TableView<Session> sessionsTable;
     @FXML
@@ -26,8 +39,7 @@ public class SessionsOverviewController {
     private TableColumn<Session, LocalDateTime> sessionStartDateTimeColumn;
     @FXML
     private TableColumn<Session, String> sessionMovieTitleColumn;
-    @FXML
-    private Label sessionStartDateTimeLabel;
+
     @FXML
     private Label sessionMovieTitleLabel;
     @FXML
@@ -74,12 +86,35 @@ public class SessionsOverviewController {
 
     private void showSessionDetails(Session session) {
         if (session != null) {
-            sessionStartDateTimeLabel.setText(DateUtil.format(session.getStartDateTime()));
-            sessionMovieTitleLabel.setText(session.getMovie().getTitle());
+
+            // movie in quotes
+            sessionMovieTitleLabel.setText("\"" + session.getMovie().getTitle() + "\"");
+            sessionMovieAgeRestrictionLabel.setText(session.getMovie().getAgeRestriction() + "+"); //int
+
+            // BigDecimal formatted to show 2 digits after dot
+            String price = String.format("%.2f руб", session.getMovie().getPrice().doubleValue()); // BigDecimal
+            sessionMoviePriceLabel.setText(price);
+
+            // formatted output for String array that shows all countries split by coma except last
+            StringBuilder sb = new StringBuilder();
+            Arrays.stream(session.getMovie().getCountries()).forEach(c -> sb.append(c).append(", "));
+            sessionMovieCountriesLabel.setText(sb.substring(0, sb.length()-2));
+
+            // TODO: 1/15/22 распарсить время
+            sessionMovieLengthLabel.setText("время");
+            sessionMovieDirectorLabel.setText(session.getMovie().getDirector());
+
+
             drawSeats(session.getRoom().getSeats());
         } else {
-            sessionStartDateTimeLabel.setText("");
+            sessionMoviePriceLabel.setText("");
             sessionMovieTitleLabel.setText("");
+            sessionMovieTitleLabel.setText("");
+            sessionMovieAgeRestrictionLabel.setText("");
+            sessionMovieCountriesLabel.setText("");
+            sessionMovieCountriesLabel.setText("");
+            sessionMovieLengthLabel.setText("");
+            sessionMovieDirectorLabel.setText("");
         }
     }
 
