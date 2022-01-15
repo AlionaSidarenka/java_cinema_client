@@ -7,9 +7,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
 
 public class APIService {
@@ -20,30 +18,29 @@ public class APIService {
     }
 
     public static Response makeGetRequest(Request request) {
-        InputStream inputStream = null;
-        OutputStream outputStream = null;
+        ObjectInputStream objectInputStream = null;
+        ObjectOutputStream objectOutputStream = null;
         Response response = null;
 
         try {
-            inputStream = clientSocket.getInputStream();
-            outputStream = clientSocket.getOutputStream();
+            objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
+            objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
 
-            Marshaller marshaller = JAXBContext.newInstance(Request.class).createMarshaller();
-            marshaller.marshal(request, outputStream); // sends request
+            objectOutputStream.writeObject(request);
+            objectOutputStream.flush();
 
-            clientSocket.shutdownOutput();
 
-            JAXBContext jaxbContext = JAXBContext.newInstance(Response.class);
-            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-            response = (Response) unmarshaller.unmarshal(inputStream);
-        } catch (IOException | JAXBException e) {
+            response = (Response) objectInputStream.readObject();
+        } catch (IOException e) {
             e.printStackTrace();
             try {
-                inputStream.close();
-                outputStream.close();
+                objectInputStream.close();
+                objectOutputStream.close();
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
 
         return response;
