@@ -78,7 +78,7 @@ public class SessionsOverviewController {
         if (session != null) {
             sessionStartDateTimeLabel.setText(DateUtil.format(session.getStartDateTime()));
             sessionMovieTitleLabel.setText(session.getMovie().getTitle());
-            drawSeats(session.getRoom().getSeats());
+            // drawSeats(session.getRoom().getSeats());
         } else {
             sessionStartDateTimeLabel.setText("");
             sessionMovieTitleLabel.setText("");
