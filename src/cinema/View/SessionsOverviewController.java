@@ -1,8 +1,8 @@
 package cinema.View;
 
 import cinema.MainApp;
-import cinema.Model.Seat;
-import cinema.Model.Session;
+import cinema.model.Seat;
+import cinema.model.Session;
 import cinema.services.SessionsService;
 import cinema.util.DateUtil;
 import javafx.collections.FXCollections;
@@ -110,18 +110,18 @@ public class SessionsOverviewController {
 
                 seatName = Integer.toString(roomSeat.getRow() + 1) + " " + Integer.toString(roomSeat.getPlace() + 1);
                 seat.setText(seatName);
-                if (roomSeat.getSold()) {
+                if (roomSeat.isSold()) {
                     seat.getStyleClass().add("sold");
                 } else {
-                    seat.getStyleClass().add(roomSeat.getReserved() ? "reserved" : "available");
+                    seat.getStyleClass().add(roomSeat.isReserved() ? "reserved" : "available");
                 }
 
                 Button finalSeat = seat;
                 seat.setOnAction(event -> {
-                    if (!roomSeat.getSold()) {
-                        roomSeat.setReserved(!roomSeat.getReserved());
+                    if (!roomSeat.isSold()) {
+                        roomSeat.setReserved(!roomSeat.isReserved());
                         finalSeat.getStyleClass().clear();
-                        finalSeat.getStyleClass().add(roomSeat.getReserved() ? "reserved" : "available");
+                        finalSeat.getStyleClass().add(roomSeat.isReserved() ? "reserved" : "available");
                     }
                 });
                 gridPane.add(seat, roomSeat.getPlace(), roomSeat.getRow()); //  (child, columnIndex, rowIndex)

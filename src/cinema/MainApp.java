@@ -1,10 +1,10 @@
 package cinema;
 
-import cinema.Model.Movie;
-import cinema.Model.Session;
 import cinema.View.SessionEditDialogController;
 import cinema.View.SessionsOverviewController;
 import cinema.connection.TCPConnection;
+import cinema.model.Movie;
+import cinema.model.Session;
 import cinema.services.SessionsService;
 import javafx.application.Application;
 import javafx.collections.FXCollections;

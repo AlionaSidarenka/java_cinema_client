@@ -1,24 +1,31 @@
-package cinema.Model;
+package cinema.model;
 
 import cinema.util.DateUtil;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-public class Session {
-    static int sessionCount = 0;
+public class Session implements Serializable {
+    private static final long SERIAL_VERSION_UID = 7966972753466200798L;
+    private static int sessionCount = 0;
+    @Getter
+    @Setter
     private Room room;
+    @Getter
+    @Setter
     private Movie movie;
+    @Getter
     private int id;
-
     private ObjectProperty<LocalDateTime> startDateTime;
 
     public Session(Room room, Movie movie, LocalDateTime startDateTime) {
-        sessionCount++;
-        id = sessionCount;
+        id = sessionCount++;
         this.room = room;
         this.movie = movie;
         this.startDateTime = new SimpleObjectProperty<LocalDateTime>(startDateTime);
@@ -41,29 +48,10 @@ public class Session {
         this.startDateTime.set(DateUtil.parse(str));
     }
 
-    public Room getRoom() {
-        return room;
-    }
-
-    public void setRoom(Room room) {
-        this.room = room;
-    }
-
-    public Movie getMovie() {
-        return movie;
-    }
-
-    public void setMovie(Movie movie) {
-        this.movie = movie;
-    }
-
-    public int getId() {
-        return id;
-    }
-
     public LocalDateTime getStartDateTime() {
-        return startDateTime.get();
+        return this.startDateTime.get();
     }
+
 
     /*public BigDecimal getPrice() {
         BigDecimal ratio = getDateRatio(getStartDateTime());
