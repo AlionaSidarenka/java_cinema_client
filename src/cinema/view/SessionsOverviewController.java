@@ -1,4 +1,4 @@
-package cinema.View;
+package cinema.view;
 
 import cinema.MainApp;
 import cinema.model.Seat;
@@ -198,7 +198,6 @@ public class SessionsOverviewController {
     @FXML
     private void loadSessions() {
         List<Session> sessions = SessionsService.getAllSessions(selectedDate.getValue());
-        Session selectedSession = sessionsTable.getSelectionModel().getSelectedItem();
         sessionsTable.setItems(FXCollections.observableArrayList(sessions));
     }
 }

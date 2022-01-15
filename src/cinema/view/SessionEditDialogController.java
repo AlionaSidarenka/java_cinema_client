@@ -1,4 +1,4 @@
-package cinema.View;
+package cinema.view;
 
 import cinema.model.Movie;
 import cinema.model.Session;

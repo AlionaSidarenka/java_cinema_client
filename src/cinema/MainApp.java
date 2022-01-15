@@ -1,11 +1,12 @@
 package cinema;
 
-import cinema.View.SessionEditDialogController;
-import cinema.View.SessionsOverviewController;
 import cinema.connection.TCPConnection;
 import cinema.model.Movie;
 import cinema.model.Session;
+import cinema.services.MoviesService;
 import cinema.services.SessionsService;
+import cinema.view.SessionEditDialogController;
+import cinema.view.SessionsOverviewController;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -45,8 +46,8 @@ public class MainApp extends Application {
             e.printStackTrace();
         }
 
-        // movies = MoviesService.getAllMovies();
         sessions = SessionsService.getAllSessions(LocalDate.now());
+        movies = MoviesService.getAllMovies(sessions);
         sessionsData.addAll(sessions);
     }
 

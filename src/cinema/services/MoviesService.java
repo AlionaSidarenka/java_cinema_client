@@ -1,14 +1,12 @@
 package cinema.services;
 
 import cinema.model.Movie;
-import cinema.connection.Request;
-import cinema.connection.Response;
+import cinema.model.Session;
 
 import java.util.List;
 
 public class MoviesService {
-    public static List<Movie> getAllMovies() {
-        Response response = APIService.makeGetRequest(new Request("GET", "getMovies"));
-        return (List<Movie>) response.getData();
+    public static List<Movie> getAllMovies(List<Session> sessions) {
+        return sessions.stream().map((Session s) -> s.getMovie()).toList();
     }
 }
