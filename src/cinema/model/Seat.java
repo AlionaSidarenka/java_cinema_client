@@ -11,9 +11,9 @@ public class Seat implements java.io.Externalizable {
     private boolean sold;
     private boolean reserved;
 
-    public Seat(int place, int row) {
-        this.place = place;
+    public Seat(int row, int place) {
         this.row = row;
+        this.place = place;
         sold = false;
         reserved = false;
     }

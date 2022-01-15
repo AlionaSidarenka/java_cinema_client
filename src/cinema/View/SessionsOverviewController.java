@@ -15,8 +15,6 @@ import javafx.scene.layout.GridPane;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class SessionsOverviewController {
@@ -78,32 +76,27 @@ public class SessionsOverviewController {
         if (session != null) {
             sessionStartDateTimeLabel.setText(DateUtil.format(session.getStartDateTime()));
             sessionMovieTitleLabel.setText(session.getMovie().getTitle());
-            // drawSeats(session.getRoom().getSeats());
+            drawSeats(session.getRoom().getSeats());
         } else {
             sessionStartDateTimeLabel.setText("");
             sessionMovieTitleLabel.setText("");
         }
     }
 
-    public void drawSeats(ArrayList<ArrayList<Seat>> seats) {
+    public void drawSeats(Seat[][] seats) {
         String seatName;
-        Iterator<ArrayList<Seat>> iter = seats.iterator();
         Button seat;
         GridPane gridPane = new GridPane();
-        int rows = seats.size();
+        int rows = seats.length;
         int col = 0;
-
         gridPane.setHgap(rows);
         gridPane.setPrefWidth(seatsPane.getWidth());
 
-        while (iter.hasNext()) {
-            ArrayList<Seat> next = iter.next();
-            col = Math.max(col, next.size());
+        for (int i = 0; i < rows; i++) { // [[1, 2], [1, 2, 3]]
+            col = Math.max(col, seats[i].length);
 
-            Iterator<Seat> innerIter = next.iterator();
-
-            while (innerIter.hasNext()) {
-                Seat roomSeat = innerIter.next();
+            for (int j = 0; j < seats[i].length; j++) {
+                Seat roomSeat = seats[i][j];
                 seat = new Button();
                 seat.setAlignment(Pos.CENTER);
                 seat.setPrefSize(40, 40);
