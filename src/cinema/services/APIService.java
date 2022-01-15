@@ -17,7 +17,7 @@ public class APIService {
         objectInputStream = new ObjectInputStream(clientSocket.getInputStream());;
     }
 
-    public static Response makeGetRequest(Request request) {
+    public static Response makeRequest(Request request) {
         Response response = null;
 
         try {

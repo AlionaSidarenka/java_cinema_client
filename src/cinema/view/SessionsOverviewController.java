@@ -140,8 +140,10 @@ public class SessionsOverviewController {
     @FXML
     private void handleDeleteSession() {
         int selectedIndex = sessionsTable.getSelectionModel().getSelectedIndex();
+        Session selectedSession = sessionsTable.getSelectionModel().getSelectedItem();
 
         if (selectedIndex >= 0) {
+            SessionsService.deleteSession(selectedSession.getStartDateTime());
             sessionsTable.getItems().remove(selectedIndex);
         } else {
             this.showAlert();
@@ -167,17 +169,8 @@ public class SessionsOverviewController {
             boolean okClicked = mainApp.showSessionEditDialog(selectedSession);
 
             if (okClicked) {
-                // SessionsService.updateSession(selectedSession.getId(), selectedSession);
-                showSessionDetails(selectedSession);
-                // sessionsTable.refresh();
-            }
-
-            int selectedIndex = sessionsTable.getSelectionModel().getSelectedIndex();
-
-            if (selectedIndex >= 0) {
-                sessionsTable.getItems().set(selectedIndex, selectedSession);
-            } else {
-                this.showAlert();
+                SessionsService.updateSession(selectedSession);
+                loadSessions();
             }
         } else {
             this.showAlert();
