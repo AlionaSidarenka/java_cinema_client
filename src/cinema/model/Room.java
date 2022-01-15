@@ -8,7 +8,6 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class Room implements Externalizable {
-    private static final long SERIAL_VERSION_UID = 1339354843860741300L;
     @Getter
     @Setter
     ArrayList<ArrayList<Seat>> seats;
