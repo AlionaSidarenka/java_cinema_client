@@ -1,17 +1,11 @@
 package cinema.model;
 
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.io.Serializable;
 
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class Seat implements Serializable {
-    private static final long SERIAL_VERSION_UID = 7414052249517525297L;
+public class Seat implements java.io.Externalizable {
     private int place;
     private int row;
     private boolean sold;
@@ -24,4 +18,21 @@ public class Seat implements Serializable {
         reserved = false;
     }
 
+    public Seat(){}
+
+    @Override
+    public void writeExternal(java.io.ObjectOutput out) throws java.io.IOException {
+        out.writeInt(getPlace());
+        out.writeInt(getRow());
+        out.writeBoolean(isSold());
+        out.writeBoolean(isReserved());
+    }
+
+    @Override
+    public void readExternal(java.io.ObjectInput in) throws java.io.IOException, ClassNotFoundException {
+        setPlace((Integer) in.readInt());
+        setRow((Integer)in.readInt());
+        setSold((Boolean)in.readBoolean());
+        setReserved((Boolean)in.readBoolean());
+    }
 }

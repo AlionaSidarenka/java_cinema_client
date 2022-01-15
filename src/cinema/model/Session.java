@@ -1,11 +1,13 @@
 package cinema.model;
 
 import cinema.util.DateUtil;
+import cinema.util.LocalDateTimeAdapter;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Externalizable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -51,6 +53,7 @@ public class Session implements Externalizable {
         this.startDateTime.set(DateUtil.parse(str));
     }
 
+    @XmlJavaTypeAdapter(value = LocalDateTimeAdapter.class)
     public LocalDateTime getStartDateTime() {
         return this.startDateTime.get();
     }
