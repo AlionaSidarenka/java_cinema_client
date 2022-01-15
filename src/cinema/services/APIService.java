@@ -19,14 +19,16 @@ public class APIService {
         Response response = null;
 
         try {
-            objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
             objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
+            // objectOutputStream.flush();
 
+            objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
             objectOutputStream.writeObject(request);
-            objectOutputStream.flush();
 
+            // objectOutputStream.flush();
 
             response = (Response) objectInputStream.readObject();
+            System.out.println(response);
         } catch (IOException e) {
             e.printStackTrace();
             try {

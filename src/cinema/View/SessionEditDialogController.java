@@ -1,7 +1,7 @@
 package cinema.View;
 
-import cinema.Model.Movie;
-import cinema.Model.Session;
+import cinema.model.Movie;
+import cinema.model.Session;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

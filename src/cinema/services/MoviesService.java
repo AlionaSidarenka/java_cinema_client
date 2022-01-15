@@ -1,6 +1,6 @@
 package cinema.services;
 
-import cinema.Model.Movie;
+import cinema.model.Movie;
 import cinema.connection.Request;
 import cinema.connection.Response;
 

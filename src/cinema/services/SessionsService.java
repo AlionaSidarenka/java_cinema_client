@@ -1,6 +1,6 @@
 package cinema.services;
 
-import cinema.Model.Session;
+import cinema.model.Session;
 import cinema.connection.Request;
 import cinema.connection.Response;
 import cinema.util.DateUtil;
