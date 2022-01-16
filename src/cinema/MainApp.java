@@ -64,6 +64,7 @@ public class MainApp extends Application {
     public void setSessions(List<Session> sessions){
         sessionsData.clear();
         sessionsData.addAll(sessions);
+        // TODO for Ivan: make real request to get all movies
         movies = MoviesService.getAllMovies(sessions);
     }
 

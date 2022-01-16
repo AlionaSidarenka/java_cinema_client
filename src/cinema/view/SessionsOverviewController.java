@@ -212,6 +212,10 @@ public class SessionsOverviewController {
 
     @FXML
     private void handleNewSession() {
+        // TODO for Ivan: this handler is user for addAction.
+        // is is crashed right now because room is not provided
+        // either provide room through roomFactory and check that save works
+        // or just do return
         Session session = new Session();
 
         boolean okClicked = mainApp.showSessionEditDialog(session);
@@ -223,6 +227,8 @@ public class SessionsOverviewController {
 
     @FXML
     private void handleEditSession() {
+        // TODO for Ivan: if we change date or time it should fail as timestamp is our id
+        // you can save date here from selectedSession and change updateSession method to accept {params: { prevDate: <oldValue> }}
         Session selectedSession = sessionsTable.getSelectionModel().getSelectedItem();
 
         if (selectedSession != null) {
