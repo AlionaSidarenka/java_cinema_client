@@ -6,6 +6,7 @@ import cinema.model.Session;
 import cinema.util.DateUtil;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,19 @@ public class SessionsService {
         return (List<Session>) response.getData();
     }
 
-    public static Response updateSession(Session data) {
+    public static Response updateSession(Session session, Session delete) {
+        List<Session> data = new ArrayList<>();
+        data.add(session);
+        data.add(delete);
+
+        Response response = APIService.<Session>makeRequest(new Request("PUT", "updateSession", data));
+
+        return response;
+    }
+
+    public static Response updateSession(Session session) {
+        List<Session> data = new ArrayList<>();
+        data.add(session);
         Response response = APIService.<Session>makeRequest(new Request("PUT", "updateSession", data));
 
         return response;

@@ -243,11 +243,14 @@ public class SessionsOverviewController {
         // you can save date here from selectedSession and change updateSession method to accept {params: { prevDate: <oldValue> }}
         Session selectedSession = sessionsTable.getSelectionModel().getSelectedItem();
 
+       Session toDelete = new Session();
+       toDelete.setStartDateTime(selectedSession.getStartDateTime());
+
         if (selectedSession != null) {
             boolean okClicked = mainApp.showSessionEditDialog(selectedSession);
 
             if (okClicked) {
-                SessionsService.updateSession(selectedSession);
+                SessionsService.updateSession(selectedSession, toDelete);
                 loadSessions();
             }
         } else {
