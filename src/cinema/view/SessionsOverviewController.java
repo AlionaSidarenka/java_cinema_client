@@ -201,6 +201,7 @@ public class SessionsOverviewController {
             if (response.getStatus().equals("Ok")) {
                 sessionsTable.getItems().remove(selectedIndex);
                 this.showSuccessAlert("Session was deleted", "Congratulations!");
+                seatsPane.getChildren().clear();
             } else {
                 this.showErrorAlert("Session was not deleted!", response.getMessage());
             }
@@ -262,6 +263,7 @@ public class SessionsOverviewController {
     private void loadSessions() {
         List<Session> sessions = SessionsService.getAllSessions(selectedDate.getValue());
         mainApp.setSessions(sessions);
+        seatsPane.getChildren().clear();
         // sessionsTable.setItems(FXCollections.observableArrayList(sessions));
     }
 }

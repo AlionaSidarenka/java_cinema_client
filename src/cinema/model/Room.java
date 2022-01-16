@@ -57,7 +57,7 @@ public class Room implements Externalizable {
             int col = (int) in.readInt();
             seats[i] = new Seat[col];
             for (int j = 0; j < col; j++) {
-                seats[i][j] = new Seat(i, j);
+                seats[i][j] = (Seat) in.readObject();
             }
         }
         setSeats((Seat[][])seats);
@@ -72,6 +72,9 @@ public class Room implements Externalizable {
         out.writeInt(row1.length);
         for (Seat[] row : row1) {
             out.writeInt(row.length);
+            for (int j = 0; j < row.length; j++) {
+                out.writeObject(row[j]);
+            }
         }
     }
 /*    private void writeObject(ObjectOutputStream s) throws IOException {
