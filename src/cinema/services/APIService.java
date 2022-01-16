@@ -38,35 +38,4 @@ public class APIService {
 
         return response;
     }
-
-//    public static <T> T makePutRequest(Request request, Class<T> content) {
-//        BufferedReader streamReader = null;
-//        BufferedWriter streamWriter = null;
-//        T result = null;
-//
-//        try {
-//            streamReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-//            streamWriter = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
-//
-//            ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
-//            String a = objectMapper.writeValueAsString(request);
-//            streamWriter.write(a);
-//            streamWriter.newLine();
-//            streamWriter.flush();
-//
-//            String responseStr = streamReader.readLine();
-//            Response<Object> response = objectMapper.readValue(responseStr, Response.class);
-//            result = objectMapper.readValue(objectMapper.writeValueAsString(response.getData()), content);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            try {
-//                streamReader.close();
-//                streamWriter.close();
-//            } catch (IOException ioException) {
-//                ioException.printStackTrace();
-//            }
-//        }
-//
-//        return result;
-//    }
 }

@@ -24,13 +24,14 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Properties;
 
-public class MainApp extends Application {
+public class Client extends Application {
     List<Session> sessions;
     List<Movie> movies;
 
     private Stage primaryStage;
     private AnchorPane rootLayout;
     private ObservableList<Session> sessionsData = FXCollections.observableArrayList();
+
 
     @Override
     public void start(Stage stage) {
@@ -48,10 +49,10 @@ public class MainApp extends Application {
 
         sessions = SessionsService.getAllSessions(LocalDate.now());
         sessionsData.addAll(sessions);
-        movies = MoviesService.getAllMovies(sessions);
+        movies = MoviesService.getAllMovies();
     }
 
-    public MainApp() { }
+    public Client() { }
 
     public ObservableList<Session> getSessionsData(){
         return sessionsData;
@@ -64,15 +65,14 @@ public class MainApp extends Application {
     public void setSessions(List<Session> sessions){
         sessionsData.clear();
         sessionsData.addAll(sessions);
-        // TODO for Ivan: make real request to get all movies
-        movies = MoviesService.getAllMovies(sessions);
+        movies = MoviesService.getAllMovies();
     }
 
     private void initRootLayout() {
         try {
             // Load rootLayout from fxml file
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("/cinema/view/RootLayout.fxml"));
+            loader.setLocation(Client.class.getResource("/cinema/view/RootLayout.fxml"));
             rootLayout = loader.load();
 
             Scene scene = new Scene(rootLayout);
@@ -86,7 +86,7 @@ public class MainApp extends Application {
     public void showCinemaOverview() {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("/cinema/view/SessionsOverview.fxml"));
+            loader.setLocation(Client.class.getResource("/cinema/view/SessionsOverview.fxml"));
             AnchorPane cinemaOverview = loader.load();
 
             ((BorderPane) rootLayout.getChildren().get(0)).setCenter(cinemaOverview);
@@ -104,17 +104,6 @@ public class MainApp extends Application {
     }
 
     public static void main(String[] args) {
-        try (OutputStream output = new FileOutputStream("config.properties")) {
-            Properties prop = new Properties();
-
-            // set the properties value
-            prop.setProperty("socket.host", "127.0.0.1");
-            prop.setProperty("socket.port", "2525");
-
-            prop.store(output, null);
-        } catch (IOException io) {
-            io.printStackTrace();
-        }
         launch(args);
     }
 
@@ -123,7 +112,7 @@ public class MainApp extends Application {
         // Load fxml-file and create new stage for "Edit Session" dialog
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("/cinema/view/SessionEditDialog.fxml"));
+            loader.setLocation(Client.class.getResource("/cinema/view/SessionEditDialog.fxml"));
             AnchorPane page = loader.load();
 
             Stage dialogStage = new Stage();

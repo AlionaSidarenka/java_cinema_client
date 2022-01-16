@@ -9,6 +9,9 @@ public class DateUtil {
     private static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm";
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
 
+    private static final String TIME_PATTERN = "HH:mm";
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern(TIME_PATTERN);
+
     private static final String DATE_PATTERN = "yyyy-MM-dd";
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN);
 
@@ -16,6 +19,12 @@ public class DateUtil {
         if (date == null) return null;
 
         return DATE_TIME_FORMATTER.format(date);
+    }
+
+    public static String timeFormat(LocalDateTime date) {
+        if (date == null) return null;
+
+        return TIME_FORMATTER.format(date);
     }
 
     public static String format(LocalDate date) {

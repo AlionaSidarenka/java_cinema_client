@@ -6,7 +6,6 @@ import lombok.Setter;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.math.BigDecimal;
-import java.util.Calendar;
 
 @XmlRootElement
 public class Movie implements java.io.Externalizable {
@@ -25,12 +24,12 @@ public class Movie implements java.io.Externalizable {
     private int id;
     @Getter
     @Setter
-    private Calendar length;
+    private String length;
     @Getter
     @Setter
     private BigDecimal price;
 
-    public Movie(String title, int ageRestriction, String director, Calendar length, BigDecimal price, String ... countries) {
+    public Movie(String title, int ageRestriction, String director, String length, BigDecimal price, String ... countries) {
         this.id = movieCount++;
         this.title = new SimpleStringProperty(title);
         this.ageRestriction = ageRestriction;
@@ -40,7 +39,7 @@ public class Movie implements java.io.Externalizable {
         this.price = price;
     }
 
-    public Movie(String title, int ageRestriction, String director, Calendar length, double price, String ... countries) {
+    public Movie(String title, int ageRestriction, String director, String length, double price, String ... countries) {
         this.id = movieCount++;
         this.title = new SimpleStringProperty(title);
         this.ageRestriction = ageRestriction;
@@ -69,7 +68,7 @@ public class Movie implements java.io.Externalizable {
         out.writeObject(getTitle());
         out.writeInt(getAgeRestriction());
         out.writeUTF(getDirector());
-        out.writeObject(getLength());
+        out.writeUTF(getLength());
         out.writeObject(getPrice());
         out.writeObject(getCountries());
     }
@@ -79,7 +78,7 @@ public class Movie implements java.io.Externalizable {
         setTitle((String)in.readObject());
         setAgeRestriction((Integer) in.readInt());
         setDirector((String) in.readUTF());
-        setLength((Calendar) in.readObject());
+        setLength((String) in.readUTF());
         setPrice((BigDecimal) in.readObject());
         setCountries((String[]) in.readObject());
     }

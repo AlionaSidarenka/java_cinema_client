@@ -30,4 +30,10 @@ public class SessionsService {
 
         return response;
     }
+
+    public static Response createSession(Session data) {
+        Response response = APIService.<Session>makeRequest(new Request("PUT", "addSession", data));
+
+        return response;
+    }
 }

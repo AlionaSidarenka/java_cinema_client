@@ -1,9 +1,12 @@
 package cinema.view;
 
-import cinema.MainApp;
+import cinema.Client;
 import cinema.connection.Response;
 import cinema.model.Seat;
 import cinema.model.Session;
+import cinema.util.DateUtil;
+import cinema.util.RoomFactory;
+import cinema.util.RoomType;
 import cinema.services.SessionsService;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -19,8 +22,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SessionsOverviewController {
-    @FXML
-    public Label sessionDirectorLabel;
     @FXML
     public Label sessionMoviePriceLabel;
     @FXML
@@ -46,19 +47,35 @@ public class SessionsOverviewController {
     private DatePicker selectedDate;
 
     // reference to Main App
-    private MainApp mainApp;
+    private Client mainApp;
 
     /**
      * Constructor.
      * Called before initialize() method.
      */
-    public SessionsOverviewController() { }
+    public SessionsOverviewController() {
+    }
 
     // Controller initialization. Is being called automatically after fxml-file loaded.
     @FXML
     private void initialize() {
         sessionStartDateTimeColumn.setCellValueFactory(cellData ->
                 cellData.getValue().startDateTimeProperty());
+
+        sessionStartDateTimeColumn.setCellFactory(column -> new TableCell<Session, LocalDateTime>() {
+            @Override
+            protected void updateItem(LocalDateTime item, boolean empty) {
+
+                super.updateItem(item, empty);
+                if (empty)
+                    setText(null);
+                else
+                    setText(DateUtil.timeFormat(item));
+            }
+        });
+
+
+
         sessionMovieTitleColumn.setCellValueFactory(cellData ->
                 cellData.getValue().getMovie().titleProprety());
 
@@ -70,7 +87,7 @@ public class SessionsOverviewController {
         selectedDate.setValue(LocalDate.now());
     }
 
-    public void setMainApp(MainApp mainApp) {
+    public void setMainApp(Client mainApp) {
         this.mainApp = mainApp;
         sessionsTable.setItems(mainApp.getSessionsData());
     }
@@ -116,10 +133,8 @@ public class SessionsOverviewController {
             // formatted output for String array that shows all countries split by coma except last
             StringBuilder sb = new StringBuilder();
             Arrays.stream(session.getMovie().getCountries()).forEach(c -> sb.append(c).append(", "));
-            sessionMovieCountriesLabel.setText(sb.substring(0, sb.length()-2));
-
-            // TODO: 1/15/22 распарсить время
-            sessionMovieLengthLabel.setText("время");
+            sessionMovieCountriesLabel.setText(sb.substring(0, sb.length() - 2));
+            sessionMovieLengthLabel.setText(session.getMovie().getLength());
             sessionMovieDirectorLabel.setText(session.getMovie().getDirector());
 
 
@@ -127,9 +142,7 @@ public class SessionsOverviewController {
         } else {
             sessionMoviePriceLabel.setText("");
             sessionMovieTitleLabel.setText("");
-            sessionMovieTitleLabel.setText("");
             sessionMovieAgeRestrictionLabel.setText("");
-            sessionMovieCountriesLabel.setText("");
             sessionMovieCountriesLabel.setText("");
             sessionMovieLengthLabel.setText("");
             sessionMovieDirectorLabel.setText("");
@@ -212,15 +225,14 @@ public class SessionsOverviewController {
 
     @FXML
     private void handleNewSession() {
-        // TODO for Ivan: this handler is user for addAction.
-        // is is crashed right now because room is not provided
-        // either provide room through roomFactory and check that save works
-        // or just do return
+
         Session session = new Session();
+        session.setRoom(RoomFactory.getInstance().getRoom(RoomType.B));
 
         boolean okClicked = mainApp.showSessionEditDialog(session);
 
         if (okClicked) {
+            SessionsService.createSession(session);
             mainApp.getSessionsData().add(session);
         }
     }
