@@ -233,7 +233,7 @@ public class SessionsOverviewController {
 
         if (okClicked) {
             SessionsService.createSession(session);
-            mainApp.getSessionsData().add(session);
+            loadSessions();
         }
     }
 
